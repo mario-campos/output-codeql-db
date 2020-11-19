@@ -17,12 +17,13 @@ runs:
         set -o errexit
         set -o noglob
         set -o nounset
+        test -d "$CODEQL_DB_DIR"
         zip \
           -9 \
           --verbose \
-          --recurse \
+          --recurse-paths \
           --exclude "$CODEQL_DB_DIR/log" \
           --exclude "$CODEQL_DB_DIR/results" \
           --exclude "$CODEQL_DB_DIR/working" \
-          db.zip "$CODEQL_DB_DIR"
-        echo "::set-output name=database-path::${PWD}/db.zip"
+          "$CODEQL_DB_DIR/db.zip" "$CODEQL_DB_DIR"
+        echo "::set-output name=database-path::$CODEQL_DB_DIR/db.zip"
