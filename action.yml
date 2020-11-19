@@ -1,12 +1,16 @@
-name: upload-codeql-db
-description: Upload the CodeQL databases as Actions artifacts
+name: output-codeql-db
+description: Output the path of the CodeQL database
 inputs:
   language:
     required: true
+outputs:
+  database-path:
+    value: ${{ steps.generate-codeql-database.outputs.database-path }}
 runs:
   using: composite
   steps: 
-    - shell: bash
+    - id: generate-codeql-database
+      shell: bash
       env:
         CODEQL_DB_DIR: ${{ runner.temp }}/codeql_databases/${{ inputs.language }}
       run: |
@@ -20,8 +24,5 @@ runs:
           --exclude "$CODEQL_DB_DIR/log" \
           --exclude "$CODEQL_DB_DIR/results" \
           --exclude "$CODEQL_DB_DIR/working" \
-          "${{ inputs.language }}-db.zip" "$CODEQL_DB_DIR"
-    - uses: actions/upload-artifact@v2
-      with:
-        name: ${{ inputs.language }}-db.zip
-        path: ${{ inputs.language }}-db.zip
+          db.zip "$CODEQL_DB_DIR"
+        echo "::set-output name=database-path::${PWD}/db.zip"
