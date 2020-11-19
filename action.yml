@@ -21,8 +21,9 @@ runs:
           -9 \
           --verbose \
           --recurse-paths \
+          "$RUNNER_TEMP/db.zip" \
+          "$CODEQL_DB_DIR" \
           --exclude "$CODEQL_DB_DIR/log/*" \
           --exclude "$CODEQL_DB_DIR/results/*" \
-          --exclude "$CODEQL_DB_DIR/working/*" \
-          "$RUNNER_TEMP/db.zip" "$CODEQL_DB_DIR"
+          --exclude "$CODEQL_DB_DIR/working/*"
         echo "::set-output name=database-path::$RUNNER_TEMP/db.zip"
