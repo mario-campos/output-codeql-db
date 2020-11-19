@@ -1,0 +1,27 @@
+name: upload-codeql-db
+description: Upload the CodeQL databases as Actions artifacts
+inputs:
+  language:
+    required: true
+runs:
+  using: composite
+  steps: 
+    - shell: bash
+      env:
+        CODEQL_DB_DIR: ${{ runner.temp }}/codeql_databases/${{ inputs.language }}
+      run: |
+        set -o errexit
+        set -o noglob
+        set -o nounset
+        zip \
+          -9 \
+          --verbose \
+          --recurse \
+          --exclude "$CODEQL_DB_DIR/log" \
+          --exclude "$CODEQL_DB_DIR/results" \
+          --exclude "$CODEQL_DB_DIR/working" \
+          "${{ inputs.language }}-db.zip" "$CODEQL_DB_DIR"
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{ inputs.language }}-db.zip
+        path: ${{ inputs.language }}-db.zip
