@@ -4,8 +4,8 @@ inputs:
   language:
     required: true
 outputs:
-  database-path:
-    value: ${{ steps.generate-codeql-database.outputs.database-path }}
+  path:
+    value: ${{ steps.generate-codeql-database.outputs.path }}
 runs:
   using: composite
   steps: 
@@ -26,4 +26,4 @@ runs:
           --exclude "$CODEQL_DB_DIR/log/*" \
           --exclude "$CODEQL_DB_DIR/results/*" \
           --exclude "$CODEQL_DB_DIR/working/*"
-        echo "::set-output name=database-path::$RUNNER_TEMP/db.zip"
+        echo "::set-output name=path::$RUNNER_TEMP/db.zip"
