@@ -3,6 +3,8 @@ description: Output the path of the CodeQL database
 inputs:
   language:
     required: true
+  codeql:
+    required: true
 outputs:
   path:
     value: ${{ steps.generate-codeql-database.outputs.path }}
@@ -12,18 +14,12 @@ runs:
     - id: generate-codeql-database
       shell: bash
       env:
+        CODEQL_CLI: ${{ inputs.codeql }}
         CODEQL_DB_DIR: ${{ runner.temp }}/codeql_databases/${{ inputs.language }}
+        CODEQL_DB_NAME: codeql-${{ inputs.language }}-db.zip
       run: |
         set -o errexit
         set -o nounset
         test -d "$CODEQL_DB_DIR"
-        zip \
-          -9 \
-          --verbose \
-          --recurse-paths \
-          "$RUNNER_TEMP/db.zip" \
-          "$CODEQL_DB_DIR" \
-          --exclude "$CODEQL_DB_DIR/log/*" \
-          --exclude "$CODEQL_DB_DIR/results/*" \
-          --exclude "$CODEQL_DB_DIR/working/*"
+        $CODEQL_CLI database bundle --output "$CODEQL_DB_NAME" "$CODEQL_DB_DIR"
         echo "::set-output name=path::$RUNNER_TEMP/db.zip"
