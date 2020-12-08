@@ -22,4 +22,4 @@ runs:
         set -o nounset
         test -d "$CODEQL_DB_DIR"
         $CODEQL_CLI database bundle --output "$CODEQL_DB_NAME" "$CODEQL_DB_DIR"
-        echo "::set-output name=path::$RUNNER_TEMP/db.zip"
+        echo "::set-output name=path::$CODEQL_DB_NAME"
