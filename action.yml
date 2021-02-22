@@ -5,7 +5,7 @@ inputs:
     required: true
   codeql:
     required: false
-    default: /opt/hostedtoolcache/CodeQL/0.0.0-20210127/x64/codeql
+    default: ${{ env.CODEQL_DIST }}
 outputs:
   path:
     value: ${{ steps.generate-codeql-database.outputs.path }}
