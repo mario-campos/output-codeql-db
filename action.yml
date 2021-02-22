@@ -14,7 +14,7 @@ runs:
     - id: generate-codeql-database
       shell: bash
       env:
-        CODEQL_CLI: ${{ inputs.codeql || env.CODEQL_DIST }}
+        CODEQL_CLI: ${{ inputs.codeql || format("{0}/codeql", env.CODEQL_DIST) }}
         CODEQL_DB_DIR: ${{ runner.temp }}/codeql_databases/${{ inputs.language }}
         CODEQL_DB_NAME: codeql-${{ inputs.language }}-db.zip
       run: |
