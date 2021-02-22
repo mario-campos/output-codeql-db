@@ -18,4 +18,4 @@ runs:
         CODEQL_DB_DIR: ${{ format('{0}/codeql_databases/{1}', runner.temp, inputs.language) }}
       run: |
         $CODEQL_CLI database bundle --output database.zip "$CODEQL_DB_DIR"
-        echo "::set-output name=path::database.zip"
+        echo "::set-output name=path::$PWD/database.zip"
