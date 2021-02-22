@@ -5,7 +5,6 @@ inputs:
     required: true
   codeql:
     required: false
-    default: ${{ env.CODEQL_DIST }}
 outputs:
   path:
     value: ${{ steps.generate-codeql-database.outputs.path }}
@@ -15,7 +14,7 @@ runs:
     - id: generate-codeql-database
       shell: bash
       env:
-        CODEQL_CLI: ${{ inputs.codeql }}
+        CODEQL_CLI: ${{ inputs.codeql || env.CODEQL_DIST }}
         CODEQL_DB_DIR: ${{ runner.temp }}/codeql_databases/${{ inputs.language }}
         CODEQL_DB_NAME: codeql-${{ inputs.language }}-db.zip
       run: |
