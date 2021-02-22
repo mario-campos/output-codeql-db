@@ -15,11 +15,7 @@ runs:
       shell: bash
       env:
         CODEQL_CLI: ${{ inputs.codeql || format('{0}/codeql', env.CODEQL_DIST) }}
-        CODEQL_DB_DIR: ${{ runner.temp }}/codeql_databases/${{ inputs.language }}
-        CODEQL_DB_NAME: codeql-${{ inputs.language }}-db.zip
+        CODEQL_DB_DIR: ${{ format('{0}/codeql_databases/{1}', runner.temp, inputs.language) }}
       run: |
-        set -o errexit
-        set -o nounset
-        test -d "$CODEQL_DB_DIR"
-        $CODEQL_CLI database bundle --output "$CODEQL_DB_NAME" "$CODEQL_DB_DIR"
-        echo "::set-output name=path::$CODEQL_DB_NAME"
+        $CODEQL_CLI database bundle --output database.zip "$CODEQL_DB_DIR"
+        echo "::set-output name=path::database.zip"
