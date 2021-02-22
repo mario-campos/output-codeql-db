@@ -9,7 +9,6 @@ Prepare a CodeQL database for extraction.
   uses: mario-campos/output-codeql-db@main
   with:
     language: javascript
-    codeql: /path/to/codeql
 - uses: actions/upload-artifact@v2
   with:
     path: ${{ steps.output-codeql-db.outputs.path }}
